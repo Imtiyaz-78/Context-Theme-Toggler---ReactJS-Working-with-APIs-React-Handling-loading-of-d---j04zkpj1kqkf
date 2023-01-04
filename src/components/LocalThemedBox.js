@@ -1,36 +1,41 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ThemeContext } from './ThemeProvider';
 
-
 const LocalThemedBox = () => {
-    const {theme, setTheme}=useContext(ThemeContext);
-    const [toggle, setToggle]=useState("dark");
-    const [localtheme, setLocal]=useState("dark");
-    useEffect(()=>{
-        if(theme === 'dark'){
-            setLocal('dark');
-            setToggle('light');
+
+     const {theme} = useContext(ThemeContext);
+    // console.log(theme);
+
+    const [localTheme,setLocalTheme] = useState(theme);
+
+    useEffect(() => {
+        
+        setLocalTheme(theme);
+       let ini = theme === 'dark'? 'Toggle local theme to light' : 'Toggle local theme to dark';
+       setLocalBtn(ini);
+
+    },[theme])
+
+const initial = localTheme === 'dark'? 'Toggle local theme to light' : 'Toggle local theme to dark';
+
+     const [localBtn,setLocalBtn] = useState(initial)
+
+    let localThemefn = () => {
+        if(localBtn === 'Toggle local theme to dark'){
+            // theme = 'dark';
+           setLocalTheme('dark');
+            setLocalBtn('Toggle local theme to light');
         }else{
-            setLocal('light');
-            setToggle('dark');
-        }
-    }, [theme])
-    
-    function handleLocalTheme(){
-        if(toggle === 'dark'){
-            setLocal('dark');
-            setToggle('light');
-        }else{
-            setLocal('light');
-            setToggle('dark');
+            // theme = 'light';
+            setLocalTheme('light');
+            setLocalBtn('Toggle local theme to dark');
         }
     }
-
 return(
-    <div style={{width:'200px',height:'200px',border:'2px solid green'}} id="local-themed-box" className={`bg-${localtheme}`}>
+    <div style={{width:'200px',height:'200px',border:'2px solid green'}} id="local-themed-box" className={'bg-'+localTheme}>
         {/* Write code below this line */}
-        <p id="local-themed-text-container" className={`txt-${localtheme}`}>Hiii</p>
-        <button id="local-theme-toggler" className={`btn btn-${localtheme}`} onClick={handleLocalTheme}>Toggle local theme to {toggle}</button>
+        <p id="local-themed-text-container" className={'txt-'+localTheme}>hello</p>
+        <button id="local-theme-toggler" onClick={localThemefn} className={`btn btn-${localTheme} txt-${localTheme}`}>{localBtn}</button>
     </div>
 )
 }
